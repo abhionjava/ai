@@ -1,0 +1,95 @@
+# app-manifest.yaml — Application Context Manifest
+# ──────────────────────────────────────────────────────────────────────────────
+# This template defines the schema for app-manifest.yaml.
+# The /generate-context skill populates this from scan-output.yaml and
+# the engineer's answers. Do not change field names — other skills depend
+# on this exact schema. modify folder names as needed
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ── Identity ──────────────────────────────────────────────────────────────────
+app:
+  name: ""                   # Application name (e.g., claims-processor)
+  type: monolith-ear         # Fixed for this skill: monolith-ear
+  domain: ""                 # Business domain (e.g., claims, billing, member)
+  team: ""                   # Owning team name
+  contact: ""                # Primary contact email
+  repo: ""                   # Repository path (e.g., org/claims-processor)
+
+# ── Build ─────────────────────────────────────────────────────────────────────
+build:
+  build_tool: ant
+  java_source: ""            # From build.xml javac source attribute
+  java_target: ""            # From build.xml javac target attribute
+  weblogic_version: ""       # From build.properties
+
+# ── EAR Modules ───────────────────────────────────────────────────────────────
+modules:
+  - name: ""                 # e.g., claims-ejb.jar
+    type: ejb                # ejb | war
+  - name: ""                 # e.g., claims-web.war
+    type: war
+
+# ── EJB Layer ─────────────────────────────────────────────────────────────────
+ejb_layer:
+  session_beans:
+    - ""                     # List of stateless/stateful session bean names
+
+  message_driven_beans:
+    - name: ""               # MDB class name (e.g., ClaimsInboundMDB)
+      queue_jndi: ""         # JNDI name from weblogic-ejb-jar.xml
+      connection_factory: "" # JMS connection factory JNDI
+      max_pool_size: ""      # max-beans-in-free-pool (proxy for volume)
+      message_format: ""     # HL7 | JSON | XML | custom (ask engineer)
+      volume: ""             # high | medium | low (ask engineer)
+
+# ── Database ──────────────────────────────────────────────────────────────────
+database:
+  type: oracle               # oracle | postgres | none
+  datasource_jndi: ""        # From weblogic-application.xml
+  schema: ""                 # Schema name (ask engineer)
+  heavy_stored_procs: false  # true | false (ask engineer)
+  orm: ""                    # jpa | jdbc | none
+  dialect: ""                # Hibernate dialect if JPA
+
+# ── Web Layer ─────────────────────────────────────────────────────────────────
+web_layer:
+  spring_mvc: false          # true if DispatcherServlet in web.xml
+  thymeleaf: false           # true if ThymeleafViewResolver in context
+  jsp_present: false         # true if .jsp references in web.xml
+
+# ── Integration ───────────────────────────────────────────────────────────────
+# Upstream: applications that send TO this application
+upstream:
+  - app: ""                  # Application name (ask engineer)
+    integration: mq          # mq | api
+    queue_or_endpoint: ""    # Queue JNDI or API endpoint
+
+# Downstream: applications this application sends TO or serves
+downstream:
+  - app: ""                  # Application name (ask engineer)
+    integration: mq          # mq | api
+    queue_or_endpoint: ""    # Queue JNDI or API endpoint
+
+# ── Special Libraries ─────────────────────────────────────────────────────────
+# Only include libraries where present: true (from scan-output.yaml)
+special_libs:
+  oracle_jdbc:
+    present: false
+    jar: ""
+    version: ""
+
+# ── Migration ─────────────────────────────────────────────────────────────────
+migration:
+  status: on-prem            # on-prem | in-progress | cloud-native
+  strangler_fig_phase: ""    # not-started | planning | in-progress | complete
+  extraction_candidates:
+    - module: ""             # Module name (e.g., claims-web.war)
+      rationale: ""          # Why this module is a good extraction candidate
+  blockers:
+    - ""                     # Known migration blockers (ask engineer)
+
+# ── Manifest Metadata ─────────────────────────────────────────────────────────
+manifest_meta:
+  generated: ""              # ISO timestamp
+  generated_by: context-gen-wl-split-dir
+  version: "1.0"

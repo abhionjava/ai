@@ -1,0 +1,152 @@
+# app-manifest.yaml — Spring Boot Microservice Context Manifest
+# ──────────────────────────────────────────────────────────────────────────────
+# This template defines the schema for app-manifest.yaml.
+# The /generate-context-microservice skill populates this from
+# scan-output.yaml and the engineer's askQuestions responses.
+# Do not change field names — other skills (including the Jira Story Refiner)
+# depend on this exact schema.
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ── Identity ──────────────────────────────────────────────────────────────────
+app:
+  name: ""                      # spring.application.name or repo name
+  type: microservice            # Fixed for this skill: microservice
+  domain: ""                    # Business domain (e.g., claims, billing, member)
+  team: ""                      # Owning team name
+  contact: ""                   # Primary contact email
+  repo: ""                      # Repository path (e.g., org/claims-service)
+
+# ── Build ─────────────────────────────────────────────────────────────────────
+build:
+  build_tool: ""                # maven | gradle
+  java_version: ""              # From pom.xml or build.gradle
+  spring_boot_version: ""       # From parent stanza in pom.xml
+  packaging: jar                # jar | war
+
+# ── Deployment ────────────────────────────────────────────────────────────────
+deployment:
+  platform: ""                  # eks | aks
+  namespace: ""                 # Kubernetes namespace
+  containerized: false          # true if Dockerfile present
+  helm_chart: false             # true if helm/Chart.yaml present
+
+# ── API ───────────────────────────────────────────────────────────────────────
+api:
+  type: ""                      # rest | rest-reactive | grpc | none
+  openapi_spec_path: ""         # Path to committed OpenAPI spec, or "not found"
+  openapi_docs_auto_generated: false  # true if springdoc-openapi in pom.xml
+  endpoints:
+    - method: ""                # GET | POST | PUT | DELETE | PATCH
+      path: ""                  # e.g., /claims/{id}
+      description: ""           # One-line description
+      high_traffic: false       # true if flagged in question 7
+      sla_ms: ""                # Latency SLA in ms if specified (question 7)
+
+# ── Messaging ─────────────────────────────────────────────────────────────────
+messaging:
+  type: ""                      # rabbitmq | kafka | activemq | ibm_mq | jms | none
+
+  # Queues/topics this service consumes (inbound)
+  inbound:
+    - topic_or_queue: ""        # Queue or topic name
+      format: ""                # JSON | HL7 | XML | Avro | custom
+      volume: ""                # high | medium | low
+      source_service: ""        # Which service publishes to this (question 3)
+
+  # Queues/topics this service publishes to (outbound)
+  outbound:
+    - topic_or_queue: ""        # Queue or topic name
+      format: ""                # JSON | HL7 | XML | Avro | custom
+      consumer_service: ""      # Which service consumes this (question 4)
+
+# ── Integration ───────────────────────────────────────────────────────────────
+# Upstream: services that call or send TO this service
+upstream:
+  - service: ""                 # Service name (question 3)
+    integration: ""             # rest | rabbitmq | kafka | activemq | ibm_mq
+    endpoint_or_queue: ""       # REST path or queue/topic name
+
+# Downstream: services this service calls or sends TO
+downstream:
+  - service: ""                 # Service name (question 4)
+    integration: ""             # rest | rabbitmq | kafka | activemq | ibm_mq
+    endpoint_or_queue: ""       # REST path or queue/topic name
+
+# ── Database ──────────────────────────────────────────────────────────────────
+database:
+  type: ""                      # postgres | oracle | mysql | h2 | none
+  host: ""                      # aws-rds | azure-postgres | on-prem | local
+  schema: ""                    # Schema name (ask engineer if not in config)
+  orm: ""                       # spring-data-jpa | jdbc-template | mybatis | none
+  dialect: ""                   # Hibernate dialect if JPA
+  migration_tool: ""            # flyway | liquibase | none
+  flyway_migration_count: ""    # Number of Flyway migration scripts if applicable
+  heavy_stored_procs: false     # true | false (question 12)
+
+# ── Special Libraries ─────────────────────────────────────────────────────────
+special_libs:
+  hapi_hl7: false               # true if hapi-base or hapi-hl7v2 in pom.xml
+  apache_fop: false             # true if fop in pom.xml
+  itext: false                  # true if itextpdf in pom.xml
+  drools: false                 # true if drools-core or kie-spring in pom.xml
+  drools_drl_files: ""          # Count of .drl files in resources (if drools: true)
+  drools_excel_rules: ""        # Count of .xlsx rule files in resources (if drools: true)
+
+# ── Security ──────────────────────────────────────────────────────────────────
+security:
+  spring_security: false        # true if spring-boot-starter-security in pom.xml
+  actuator_exposed: false       # true if spring-boot-starter-actuator in pom.xml
+  compliance_notes: ""          # HIPAA, PCI, SOC2 scope (question 6)
+
+# ── Constraints ───────────────────────────────────────────────────────────────
+# Things engineers must NOT break when modifying this service.
+# Used by the Jira Story Refiner for feasibility checks.
+constraints:
+  - ""                          # e.g., "API contract with api-gateway is frozen — no path changes"
+                                # e.g., "Service is in HIPAA boundary — no PHI in logs"
+                                # e.g., "spring-boot version locked at 2.7.x — do not upgrade"
+
+# ── Migration / Refactor ──────────────────────────────────────────────────────
+migration:
+  status: ""                    # cloud-native | in-progress | planned | none
+  target_state: ""              # Describe target (e.g., "migrate Oracle to Aurora Postgres")
+  timeline: ""                  # e.g., "Q3 2026"
+  notes: ""                     # Any additional migration context
+
+# ── Functional Context ────────────────────────────────────────────────────────
+# Populated from Step 3 askQuestions. Required by the Jira Story Refiner skill
+# for technical feasibility assessment.
+functional_context:
+
+  # What the service does in 2-3 sentences (question 8)
+  summary: ""
+
+  # Core workflows this service handles (question 9)
+  workflows:
+    - name: ""                  # Short workflow name (e.g., "Claim Submission")
+      description: ""           # One-line description
+
+  # Key business entities owned or managed by this service (question 10)
+  domain_entities:
+    - name: ""                  # Entity name (e.g., Claim)
+      description: ""           # One-line description
+
+  # Existing API endpoints — auto-populated from OpenAPI spec if present,
+  # otherwise from question 11. Used to prevent duplicate endpoint suggestions.
+  api_surface:
+    rest_endpoints:
+      - method: ""              # GET | POST | PUT | DELETE | PATCH
+        path: ""                # e.g., /claims/{id}
+        description: ""         # One-line description
+
+  # Stored procedures or complex native queries (question 12)
+  stored_procedures:
+    - name: ""                  # Procedure name
+      signature: ""             # Parameters (e.g., sp_validate_claim(claim_id BIGINT))
+      description: ""           # One-line purpose
+
+# ── Manifest Metadata ─────────────────────────────────────────────────────────
+manifest_meta:
+  generated: ""                 # ISO timestamp
+  generated_by: generate-context-microservice-skill
+  version: "1.0"

@@ -1,0 +1,219 @@
+# app-manifest.yaml — Spring Boot + React SPA Context Manifest
+# ──────────────────────────────────────────────────────────────────────────────
+# This template defines the schema for app-manifest.yaml.
+# The /generate-context-spa skill populates this from scan-output.yaml
+# and the engineer's askQuestions responses.
+# Do not change field names — other skills (Jira Story Refiner, future
+# Figma-to-UI skill) depend on this exact schema.
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ── Identity ──────────────────────────────────────────────────────────────────
+app:
+  name: ""                        # Application name (e.g., member-portal)
+  type: spa-fullstack             # Fixed for this skill: spa-fullstack
+  domain: ""                      # Business domain (e.g., claims, member, billing)
+  team: ""                        # Owning team name
+  contact: ""                     # Primary contact email
+  repo: ""                        # Repository path (e.g., org/member-portal)
+  layout: ""                      # monorepo | separate-repos
+
+# ── Backend — Build ───────────────────────────────────────────────────────────
+backend:
+  build_tool: ""                  # maven | gradle
+  java_version: ""                # From pom.xml or build.gradle
+  spring_boot_version: ""         # From parent stanza
+  packaging: jar                  # jar | war
+  frontend_maven_plugin: false    # true if frontend-maven-plugin builds React
+
+  # ── Backend — API ───────────────────────────────────────────────────────────
+  api:
+    type: rest                    # rest | rest-reactive | none
+    openapi_spec_path: ""         # Path to committed spec, or "not found"
+    openapi_docs_auto_gen: false  # true if springdoc-openapi in pom.xml
+    cors_origins:
+      - ""                        # Allowed origins from security config
+    auth_mechanism: ""            # session | jwt | oauth2 | none (question 4)
+    endpoints:
+      - method: ""                # GET | POST | PUT | DELETE | PATCH
+        path: ""                  # e.g., /api/claims/{id}
+        description: ""           # One-line description
+        called_by_frontend: true  # true if this endpoint is called by the SPA
+
+  # ── Backend — Database ──────────────────────────────────────────────────────
+  database:
+    type: ""                      # postgres | oracle | mysql | h2 | none
+    host: ""                      # aws-rds | azure-postgres | on-prem | local
+    schema: ""                    # Schema name (ask engineer)
+    orm: ""                       # spring-data-jpa | jdbc-template | mybatis | none
+    dialect: ""                   # Hibernate dialect if JPA
+    migration_tool: ""            # flyway | liquibase | none
+    flyway_migration_count: ""    # Number of migration scripts if applicable
+    heavy_stored_procs: false     # true | false (ask engineer)
+
+  # ── Backend — Security ──────────────────────────────────────────────────────
+  security:
+    spring_security: false        # From pom.xml dependency detection
+    jwt_or_oauth_detected: false  # Hint from application.yml config
+    compliance_notes: ""          # HIPAA, PCI, etc. (question 6)
+
+# ── Frontend — Stack ──────────────────────────────────────────────────────────
+frontend:
+  framework: react                # Fixed for this skill: react
+  language: ""                    # typescript | javascript
+  react_version: ""               # From package.json
+  node_version: ""                # From .nvmrc or engines field
+  build_tool: ""                  # vite | cra | craco | webpack
+  package_manager: ""             # npm | yarn | pnpm
+
+  # State management
+  state_management: ""            # redux | zustand | mobx | jotai | recoil | context-api | none
+
+  # Routing
+  routing: ""                     # react-router | tanstack-router | wouter | none
+
+  # UI
+  ui_library: ""                  # mui-v5 | ant-design | chakra-ui | primereact | mantine | none
+  tailwind: false                 # true if tailwindcss in devDependencies
+  shadcn_radix: false             # true if @radix-ui packages detected
+  css_approach: ""                # css-modules | styled-components | emotion | tailwind | plain-css
+
+  # Data fetching
+  http_client: ""                 # axios | fetch
+  react_query: false              # true if @tanstack/react-query detected
+  swr: false                      # true if swr detected
+
+  # Forms
+  form_library: ""                # react-hook-form | formik | none
+
+  # Internationalisation
+  i18n: false                     # true if i18next or react-intl detected
+
+  # Testing
+  testing:
+    unit: ""                      # vitest | jest | none
+    component: false              # true if @testing-library/react detected
+    e2e: ""                       # playwright | cypress | none
+
+  # Mandatory patterns from question 12
+  # Engineers must follow these when building new UI
+  mandatory_patterns:
+    - pattern: ""                 # Short name (e.g., "API calls via useApi hook")
+      description: ""             # Full rule engineers must follow
+      reason: ""                  # Why this pattern exists
+
+# ── Frontend — Build Config ───────────────────────────────────────────────────
+frontend_build:
+  config_file: ""                 # vite.config.ts | webpack.config.js | etc.
+  api_proxy_target: ""            # Backend URL from proxy config (dev only)
+  env_files:
+    - ""                          # .env, .env.development, .env.production, etc.
+
+# ── Integration ───────────────────────────────────────────────────────────────
+integration:
+  # How the frontend is served
+  frontend_serving: ""            # spring-boot-static | nginx-container | cdn | separate
+  same_origin: false              # true if frontend served from same host as API
+
+  # External services the frontend calls beyond its own backend
+  external_api_calls:
+    - service: ""                 # Service name (question 5)
+      purpose: ""                 # Why the frontend calls it directly
+      integration: ""             # rest | oauth2 | websocket
+
+  # Backend integrations (upstream/downstream of the Spring Boot API)
+  backend_upstream:
+    - service: ""                 # Service that calls this backend
+      integration: ""             # rest | mq
+      endpoint_or_queue: ""
+
+  backend_downstream:
+    - service: ""                 # Service this backend calls
+      integration: ""             # rest | mq
+      endpoint_or_queue: ""
+
+# ── Deployment ────────────────────────────────────────────────────────────────
+deployment:
+  platform: ""                    # eks | aks | unknown
+  containerized: false            # true if Dockerfile present
+  helm_chart: false               # true if helm/Chart.yaml present
+  nginx_config: false             # true if nginx.conf present
+
+# ── Design System ─────────────────────────────────────────────────────────────
+# Populated from question 11. Used by the future Figma-to-UI skill.
+design_system:
+  figma_url: ""                   # Figma file URL if provided (not accessed)
+  figma_connected: false          # true if engineer confirmed Figma link exists
+  component_library: ""          # Name of the component library or "custom"
+  design_tokens: false            # true if design tokens detected or confirmed
+  storybook: false                # true if Storybook detected
+  accessibility_standard: ""     # WCAG 2.1 AA | WCAG 2.1 AAA | none | unknown
+  performance_targets:
+    lcp_ms: ""                    # Largest Contentful Paint target in ms
+    other: ""                     # Any other performance target from question 7
+
+# ── Special Libraries (backend) ───────────────────────────────────────────────
+special_libs:
+  apache_fop: false               # true if fop in pom.xml
+  itext: false                    # true if itextpdf in pom.xml
+  drools: false                   # true if drools-core in pom.xml
+  hapi_hl7: false                 # true if hapi-base in pom.xml
+
+# ── Users ─────────────────────────────────────────────────────────────────────
+users:
+  audience: ""                    # internal | external | both (question 3)
+  auth_description: ""            # How users authenticate (SSO, Active Directory, etc.)
+
+# ── Functional Context ────────────────────────────────────────────────────────
+# Populated from Step 3 askQuestions. Required by the Jira Story Refiner skill.
+functional_context:
+
+  # What the application does in 2-3 sentences (question 8)
+  summary: ""
+
+  # Core user workflows (question 9)
+  workflows:
+    - name: ""                    # Short workflow name (e.g., "Claim Submission")
+      description: ""             # One-line description
+
+  # Key pages / views in the React application (question 10)
+  ui_pages:
+    - name: ""                    # Page name (e.g., "Claims List")
+      route: ""                   # React Router path (e.g., /claims)
+      description: ""             # One-line description of what this page does
+      auth_required: true         # true if route is behind authentication
+
+  # Key business entities owned by the backend (from functional context)
+  domain_entities:
+    - name: ""                    # Entity name (e.g., Claim)
+      description: ""             # One-line description
+
+  # Existing backend API endpoints used by the frontend
+  # Auto-populated from OpenAPI spec if present; otherwise from question 12
+  api_surface:
+    rest_endpoints:
+      - method: ""               # GET | POST | PUT | DELETE | PATCH
+        path: ""                 # e.g., /api/claims/{id}
+        description: ""          # One-line description
+
+  # Stored procedures (backend database)
+  stored_procedures:
+    - name: ""                   # Procedure name
+      signature: ""              # Parameters
+      description: ""            # One-line purpose
+
+# ── Constraints ───────────────────────────────────────────────────────────────
+constraints:
+  - ""                           # e.g., "No PHI in browser localStorage — HIPAA boundary"
+                                 # e.g., "API paths under /api/v1/ are frozen — mobile app depends on them"
+                                 # e.g., "React version locked at 18.x — do not upgrade to 19"
+
+# ── Migration / Refactor ──────────────────────────────────────────────────────
+migration:
+  status: ""                     # cloud-native | in-progress | planned | none
+  notes: ""                      # Any migration context
+
+# ── Manifest Metadata ─────────────────────────────────────────────────────────
+manifest_meta:
+  generated: ""                  # ISO timestamp
+  generated_by: generate-context-spa-skill
+  version: "1.0"
