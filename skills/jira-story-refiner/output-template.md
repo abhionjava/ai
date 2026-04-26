@@ -1,9 +1,6 @@
 # Output Template — Jira Story Refiner
 
-This file defines the exact format for the implementation plan written by
-the `/jira-story-refiner` skill. Replace all `{placeholders}` with actual
-content. Do not add or remove sections — other tools and processes may
-depend on this structure.
+Replace all `{placeholders}` with actual content. Do not add or remove sections.
 
 Output filename: `{TICKET-ID}-refinement.md` (e.g., `PROJ-1234-refinement.md`)
 Output location: project root
@@ -23,8 +20,7 @@ Output location: project root
 
 ## Rewritten Acceptance Criteria
 
-_Technical rewrite of the original story criteria. Written in Given/When/Then
-format. Specific enough to form the basis of a test plan._
+_Technical rewrite of the original story criteria. Written in Given/When/Then format. Specific enough to form the basis of a test plan._
 
 **Given** {precondition — system state, existing data, or user role}
 **When** {action — API call, MQ message received, UI interaction, scheduled trigger}
@@ -45,8 +41,7 @@ format. Specific enough to form the basis of a test plan._
 
 **{Approach name}**
 
-{One paragraph describing the approach: what it does, which layers it
-touches, and why it was chosen over the alternatives.}
+{One paragraph describing the approach: what it does, which layers it touches, and why it was chosen over the alternatives.}
 
 ### Tradeoff Accepted
 
@@ -63,8 +58,7 @@ touches, and why it was chosen over the alternatives.}
 
 ## Affected Components
 
-_List only components that will be created or modified. Do not list
-components that are read-only or unchanged._
+_List only components that will be created or modified. Do not list components that are read-only or unchanged._
 
 | Component | Type | Change |
 |---|---|---|
@@ -116,33 +110,6 @@ Spring Boot layering._
 2. {Step — e.g., "Add columns: `approved_by VARCHAR(100)`, `approved_at TIMESTAMP`"}
 3. {Step — e.g., "Both columns nullable — existing rows are unaffected"}
 
-<!-- ── FOR EAR MONOLITH ─────────────────────────────────────────── -->
-<!--
-### Layer 1: Web (WAR)
-
-1. {Step — e.g., "Add `POST /claims/{id}/approve` mapping to `ClaimsController`"}
-2. {Step — e.g., "Inject `ClaimsProcessorBean` via `@EJB`"}
-3. {Step — e.g., "Call `claimsProcessorBean.approveClaim(claimId, reason)`"}
-4. {Step — e.g., "Return `ApprovalResponseDTO` as JSON via `@ResponseBody`"}
-
-### Layer 2: EJB Session Bean
-
-1. {Step — e.g., "Add `approveClaim(Long claimId, String reason)` to `ClaimsProcessorBean`"}
-2. {Step — e.g., "Annotate with `@TransactionAttribute(REQUIRED)`"}
-3. {Step — e.g., "Call `sp_approve_claim` via `ClaimsDAO.approveClaim(claimId, reason)`"}
-4. {Step — e.g., "Publish approval message to `jms/Claims.Approved.Queue` via `ClaimsJMSPublisher`"}
-
-### Layer 3: JPA / JDBC
-
-1. {Step — e.g., "Add `approveClaim(claimId, reason)` to `ClaimsDAO`"}
-2. {Step — e.g., "Call Oracle stored procedure `sp_approve_claim` via `StoredProcedureQuery`"}
-
-### Layer 4: Oracle Stored Procedure
-
-1. {Step — e.g., "Raise DBA ticket: new procedure `sp_approve_claim(p_claim_id NUMBER, p_reason VARCHAR2)`"}
-2. {Step — e.g., "Proc must: validate claim state, update CLAIMS table, insert CLAIMS_AUDIT row"}
-3. {Step — e.g., "Raise exception `CLAIM_NOT_IN_SUBMITTED_STATE` if validation fails"}
--->
 
 ---
 

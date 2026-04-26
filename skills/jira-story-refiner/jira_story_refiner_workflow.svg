@@ -1,0 +1,156 @@
+<svg viewBox="0 0 820 720" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, -apple-system, sans-serif">
+  <title>Jira Story Refiner — Skill Workflow</title>
+  <desc>Seven-step workflow diagram for the Jira Story Refiner skill: manifest load, story intake, gap analysis, clarification, feasibility engine, option selection, and plan output</desc>
+
+  <defs>
+    <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#aaa"/>
+    </marker>
+    <marker id="arr-warn" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#f0c040"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="820" height="720" fill="#f8f9fa" rx="12"/>
+
+  <!-- Title -->
+  <text x="410" y="36" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a2e">Jira Story Refiner — Skill Workflow</text>
+  <text x="410" y="54" text-anchor="middle" font-size="11" fill="#888">7 steps · manifest context · feasibility engine · layer-by-layer plan output</text>
+
+  <!-- ── STEP 1: Load Manifest ── -->
+  <rect x="36" y="72" width="748" height="62" rx="8" fill="#eef0f4" stroke="#dde" stroke-width="1"/>
+  <text x="52" y="91" font-size="10" font-weight="700" fill="#5b6af0">1 · LOAD MANIFEST</text>
+  <rect x="52" y="98" width="170" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="137" y="115" text-anchor="middle" font-size="10" fill="#1a1a2e">Read app-manifest.yaml</text>
+  <rect x="232" y="98" width="170" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="317" y="115" text-anchor="middle" font-size="10" fill="#1a1a2e">Hold full contents in context</text>
+  <rect x="412" y="98" width="170" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="497" y="115" text-anchor="middle" font-size="10" fill="#1a1a2e">Detect app.type (EAR / SB)</text>
+  <rect x="592" y="98" width="182" height="26" rx="5" fill="#e74c3c" opacity=".13"/>
+  <text x="683" y="115" text-anchor="middle" font-size="10" fill="#1a1a2e">⚠ Warn if missing / stale (90d)</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="410" y1="134" x2="410" y2="148" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── STEP 2: Story Intake ── -->
+  <rect x="36" y="148" width="748" height="62" rx="8" fill="#eef0f4" stroke="#dde" stroke-width="1"/>
+  <text x="52" y="167" font-size="10" font-weight="700" fill="#5b6af0">2 · STORY INTAKE</text>
+  <rect x="52" y="174" width="220" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="162" y="191" text-anchor="middle" font-size="10" fill="#1a1a2e">Jira URL → fetch_jira_story.py</text>
+  <rect x="282" y="174" width="220" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="392" y="191" text-anchor="middle" font-size="10" fill="#1a1a2e">Or accept pasted story text</text>
+  <rect x="512" y="174" width="262" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="643" y="191" text-anchor="middle" font-size="10" fill="#1a1a2e">Extract: ticket ID · summary · description · AC</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="410" y1="210" x2="410" y2="224" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── STEP 3: Gap Analysis ── -->
+  <rect x="36" y="224" width="748" height="62" rx="8" fill="#eef0f4" stroke="#dde" stroke-width="1"/>
+  <text x="52" y="243" font-size="10" font-weight="700" fill="#5b6af0">3 · GAP ANALYSIS  <tspan font-weight="400" fill="#888">(internal — not shown to engineer)</tspan></text>
+  <rect x="52" y="250" width="230" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="167" y="267" text-anchor="middle" font-size="10" fill="#1a1a2e">Story gaps (AC, role, edge cases)</text>
+  <rect x="292" y="250" width="230" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="407" y="267" text-anchor="middle" font-size="10" fill="#1a1a2e">Manifest alignment (layer, entity, MQ)</text>
+  <rect x="532" y="250" width="242" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="653" y="267" text-anchor="middle" font-size="10" fill="#1a1a2e">Select top 3–5 gaps to ask about</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="410" y1="286" x2="410" y2="300" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── STEP 4: Clarification ── -->
+  <rect x="36" y="300" width="748" height="62" rx="8" fill="#eef0f4" stroke="#dde" stroke-width="1"/>
+  <text x="52" y="319" font-size="10" font-weight="700" fill="#5b6af0">4 · CLARIFICATION via askQuestions</text>
+  <rect x="52" y="326" width="225" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="164" y="343" text-anchor="middle" font-size="10" fill="#1a1a2e">Interactive carousel (max 5 Qs)</text>
+  <rect x="287" y="326" width="225" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="399" y="343" text-anchor="middle" font-size="10" fill="#1a1a2e">Trigger · persistence · validation</text>
+  <rect x="522" y="326" width="252" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="648" y="343" text-anchor="middle" font-size="10" fill="#1a1a2e">MQ contract impact · additive vs change</text>
+
+  <!-- Arrow 4→5 -->
+  <line x1="410" y1="362" x2="410" y2="376" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── STEP 5: Feasibility Engine ── -->
+  <rect x="36" y="376" width="748" height="96" rx="8" fill="#fff8e1" stroke="#f0c040" stroke-width="1.5"/>
+  <text x="52" y="395" font-size="10" font-weight="700" fill="#b8860b">5 · FEASIBILITY ENGINE  ⚡  <tspan font-weight="400" fill="#92400e">(load feasibility-rules.md · run all 5 checks per approach)</tspan></text>
+
+  <rect x="52" y="402" width="128" height="60" rx="5" fill="#fef3c7" stroke="#f0c040" stroke-width="1"/>
+  <text x="116" y="420" text-anchor="middle" font-size="9" font-weight="600" fill="#92400e">Stack Check</text>
+  <text x="116" y="434" text-anchor="middle" font-size="8.5" fill="#78350f">libs · Java version</text>
+  <text x="116" y="447" text-anchor="middle" font-size="8.5" fill="#78350f">EJB vs Spring fit</text>
+
+  <rect x="190" y="402" width="128" height="60" rx="5" fill="#fef3c7" stroke="#f0c040" stroke-width="1"/>
+  <text x="254" y="420" text-anchor="middle" font-size="9" font-weight="600" fill="#92400e">Architecture Check</text>
+  <text x="254" y="434" text-anchor="middle" font-size="8.5" fill="#78350f">layer fit · call direction</text>
+  <text x="254" y="447" text-anchor="middle" font-size="8.5" fill="#78350f">circular deps</text>
+
+  <rect x="328" y="402" width="128" height="60" rx="5" fill="#fef3c7" stroke="#f0c040" stroke-width="1"/>
+  <text x="392" y="420" text-anchor="middle" font-size="9" font-weight="600" fill="#92400e">Contract Check</text>
+  <text x="392" y="434" text-anchor="middle" font-size="8.5" fill="#78350f">API surface changes</text>
+  <text x="392" y="447" text-anchor="middle" font-size="8.5" fill="#78350f">MQ format / field changes</text>
+
+  <rect x="466" y="402" width="128" height="60" rx="5" fill="#fef3c7" stroke="#f0c040" stroke-width="1"/>
+  <text x="530" y="420" text-anchor="middle" font-size="9" font-weight="600" fill="#92400e">DB Check</text>
+  <text x="530" y="434" text-anchor="middle" font-size="8.5" fill="#78350f">schema / proc / migration</text>
+  <text x="530" y="447" text-anchor="middle" font-size="8.5" fill="#78350f">DBA coordination?</text>
+
+  <rect x="604" y="402" width="170" height="60" rx="5" fill="#fef3c7" stroke="#f0c040" stroke-width="1"/>
+  <text x="689" y="420" text-anchor="middle" font-size="9" font-weight="600" fill="#92400e">Cross-App Check</text>
+  <text x="689" y="434" text-anchor="middle" font-size="8.5" fill="#78350f">multi-team scope?</text>
+  <text x="689" y="447" text-anchor="middle" font-size="8.5" fill="#78350f">strangler-fig conflict?</text>
+
+  <!-- Arrow 5→6 -->
+  <line x1="410" y1="472" x2="410" y2="486" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── STEP 6: Option Presentation ── -->
+  <rect x="36" y="486" width="748" height="62" rx="8" fill="#eef0f4" stroke="#dde" stroke-width="1"/>
+  <text x="52" y="505" font-size="10" font-weight="700" fill="#5b6af0">6 · OPTION PRESENTATION + SELECTION</text>
+  <rect x="52" y="512" width="210" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="157" y="529" text-anchor="middle" font-size="10" fill="#1a1a2e">2–3 feasible approaches</text>
+  <rect x="272" y="512" width="210" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="377" y="529" text-anchor="middle" font-size="10" fill="#1a1a2e">Tradeoff comparison table</text>
+  <rect x="492" y="512" width="210" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="597" y="529" text-anchor="middle" font-size="10" fill="#1a1a2e">Engineer picks + states tradeoff</text>
+  <rect x="712" y="512" width="62" height="26" rx="5" fill="#e74c3c" opacity=".13"/>
+  <text x="743" y="529" text-anchor="middle" font-size="10" fill="#1a1a2e">✗ Ruled out</text>
+
+  <!-- Arrow 6→7 -->
+  <line x1="410" y1="548" x2="410" y2="562" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── STEP 7: Plan Output ── -->
+  <rect x="36" y="562" width="748" height="62" rx="8" fill="#eef0f4" stroke="#dde" stroke-width="1"/>
+  <text x="52" y="581" font-size="10" font-weight="700" fill="#5b6af0">7 · IMPLEMENTATION PLAN OUTPUT  <tspan font-weight="400" fill="#888">(written to {TICKET-ID}-refinement.md)</tspan></text>
+  <rect x="52" y="588" width="138" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="121" y="605" text-anchor="middle" font-size="10" fill="#1a1a2e">Rewritten AC</text>
+  <rect x="200" y="588" width="138" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="269" y="605" text-anchor="middle" font-size="10" fill="#1a1a2e">Layer-by-layer steps</text>
+  <rect x="348" y="588" width="138" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="417" y="605" text-anchor="middle" font-size="10" fill="#1a1a2e">DB + integration impact</text>
+  <rect x="496" y="588" width="138" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="565" y="605" text-anchor="middle" font-size="10" fill="#1a1a2e">Risks + open questions</text>
+  <rect x="644" y="588" width="130" height="26" rx="5" fill="#5b6af0" opacity=".15"/>
+  <text x="709" y="605" text-anchor="middle" font-size="10" fill="#1a1a2e">Definition of Done</text>
+
+  <!-- ── Files section ── -->
+  <rect x="36" y="642" width="748" height="62" rx="8" fill="#eef0f4" stroke="#dde" stroke-width="1"/>
+  <text x="52" y="661" font-size="10" font-weight="700" fill="#444">SKILL FILES</text>
+
+  <rect x="52" y="668" width="220" height="28" rx="5" fill="#f8f9fa" stroke="#dde" stroke-width="1"/>
+  <text x="162" y="682" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1a2e">SKILL.md</text>
+  <text x="162" y="694" text-anchor="middle" font-size="9" fill="#888">7-step instruction + rules</text>
+
+  <rect x="282" y="668" width="220" height="28" rx="5" fill="#f8f9fa" stroke="#dde" stroke-width="1"/>
+  <text x="392" y="682" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1a2e">feasibility-rules.md</text>
+  <text x="392" y="694" text-anchor="middle" font-size="9" fill="#888">5 checks · EAR + microservice rules</text>
+
+  <rect x="512" y="668" width="220" height="28" rx="5" fill="#f8f9fa" stroke="#dde" stroke-width="1"/>
+  <text x="622" y="682" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1a2e">output-template.md</text>
+  <text x="622" y="694" text-anchor="middle" font-size="9" fill="#888">Jira-ready plan format</text>
+
+  <rect x="742" y="668" width="32" height="28" rx="5" fill="#f8f9fa" stroke="#dde" stroke-width="1"/>
+  <text x="758" y="682" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1a2e">🐍</text>
+  <text x="758" y="694" text-anchor="middle" font-size="8" fill="#888">fetch</text>
+
+</svg>

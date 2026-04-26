@@ -1,27 +1,10 @@
 ---
 name: jira-story-refiner
-description: Refines a Jira user story into a technically feasible, layer-by-layer
-  implementation plan for a Java application. Accepts a Jira ticket URL or pasted
-  story text. Checks technical feasibility before presenting options. Writes a
-  structured implementation plan as a Markdown file to the workspace.
-  Invoke with /jira-story-refiner.
+description: Refines a Jira user story into a technically feasible, layer-by-layer implementation plan for a Java application. Accepts a Jira ticket URL or pasted story text. Checks technical feasibility before presenting options. Writes a structured implementation plan as a Markdown file to the workspace. Invoke with /jira-story-refiner.
 ---
 
 # Jira Story Refiner Skill
 
-## Purpose
-
-Transform a vague or non-technical Jira story into a structured, implementable
-plan that an engineer can act on immediately. The skill:
-
-- Loads the application manifest for context — no source code scanning
-- Fetches the story from Jira or accepts pasted text
-- Identifies gaps and clarifies using askQuestions (max 5 questions)
-- Checks technical feasibility of every approach before presenting it
-- Presents 2–3 feasible options with a tradeoff comparison
-- Writes a Jira-ready implementation plan as a Markdown file
-
-This is a single-story, single-session skill. Start a new session for each story.
 
 ## Prerequisites
 
@@ -34,20 +17,7 @@ This is a single-story, single-session skill. Start a new session for each story
 
 ### Step 1 — Load application manifest
 
-Read `app-manifest.yaml` from the project root.
-
-Extract and hold in context:
-- `app.name`, `app.type` (monolith-ear | microservice)
-- `build.java_version`, `build.spring_boot_version` (if microservice)
-- `ejb_layer` or `api` section (depending on app type)
-- `messaging` section — queue/topic names, formats, volumes
-- `database` — type, ORM, heavy_stored_procs flag
-- `upstream` and `downstream` integration map
-- `special_libs` — only those where present: true
-- `constraints` list
-- `migration.strangler_fig_phase`
-- `functional_context` — summary, workflows, domain_entities, api_surface,
-  stored_procedures
+Read `app-manifest.yaml` from the project root and hold the full contents in context.
 
 If `app-manifest.yaml` is not found, stop and tell the engineer:
 > "app-manifest.yaml not found. Please run /generate-context (EAR) or
@@ -85,12 +55,6 @@ Use the pasted text as-is. Try to identify a ticket ID from the text
 (e.g., a line starting with `PROJ-1234` or `[PROJ-1234]`). Use `manual` as
 the ID if none is found.
 
-**Story fields to extract:**
-- Ticket ID (e.g., PROJ-1234)
-- Summary / title
-- Description (the "As a / I want / So that" or free-form text)
-- Acceptance criteria (if present)
-- Labels or components (if present in the fetch output)
 
 ### Step 3 — Gap analysis (internal — do not show to engineer)
 
@@ -114,43 +78,21 @@ Identify the most critical missing information using this checklist:
 - [ ] Does it require DB changes (new table, schema change, stored proc)?
 - [ ] Does it involve any special library (HL7, FOP, Drools, iText)?
 
-Select the **top 3–5 gaps** to ask about. Do not ask about gaps you can
-confidently infer from the story + manifest.
+Select the **top 3–5 gaps** to ask about. Do not ask about gaps you can confidently infer from the story + manifest.
 
 ### Step 4 — Clarification via askQuestions
 
-Use the **askQuestions** tool to present the top gaps identified in Step 3
-as an interactive carousel. Frame each question concisely and include
-a hint based on the manifest context.
+Use the **askQuestions** tool to present the top gaps identified in Step 3 as an interactive carousel. Frame each question concisely and include a hint based on the manifest context.
 
-Example questions (adapt to actual gaps found):
+Examples: trigger type, persistence target, validation routing, MQ contract impact, additive vs. change.
 
-- "What triggers this workflow — a user action in the UI, an inbound MQ
-  message, or a scheduled job?"
-
-- "Should the result be persisted to the database, returned synchronously
-  to the caller, or published to an outbound queue?"
-
-- "Are there any validation rules that must pass before the operation
-  proceeds? If so, should they go through the Drools rules engine or
-  inline business logic?"
-
-- "Does this change the message format on {queue_name}? If so, which
-  downstream services consume that queue?"
-
-- "Is this additive (new feature) or a change to existing behaviour in
-  {workflow_name}?"
-
-Do not ask more than 5 questions. If you have fewer than 3 genuine gaps,
-proceed directly to Step 5.
+Do not ask more than 5 questions. If you have fewer than 3 genuine gaps, proceed directly to Step 5.
 
 ### Step 5 — Feasibility checking
 
-Read `.github/skills/jira-story-refiner/feasibility-rules.md` to load the
-full ruleset. Then:
+Read `.github/skills/jira-story-refiner/feasibility-rules.md` to load the full ruleset. Then:
 
-For each potential implementation approach you are considering (you should
-have 2–4 candidates at this point), run all five checks from the rules file:
+For each potential implementation approach you are considering (you should have 2–4 candidates at this point), run all five checks from the rules file:
 
 1. **Stack Check** — Does it fit the technology stack?
 2. **Architecture Check** — Does it fit the layering and patterns?
@@ -197,13 +139,11 @@ Then use the **askQuestions** tool with two questions:
 1. "Which approach do you want to proceed with? (provide the name or number)"
 2. "What tradeoff are you accepting with this choice? (briefly describe)"
 
-Do not proceed to Step 7 until the engineer has answered both questions.
-This ensures deliberate decision-making rather than defaulting to option 1.
+Do not proceed to Step 7 until the engineer has answered both questions. This ensures deliberate decision-making rather than defaulting to option 1.
 
 ### Step 7 — Generate implementation plan
 
-Using the selected approach and all gathered context, generate a complete
-implementation plan following the exact format defined in
+Using the selected approach and all gathered context, generate a complete implementation plan following the exact format defined in
 `.github/skills/jira-story-refiner/output-template.md`.
 
 Determine the output filename:
@@ -211,8 +151,7 @@ Determine the output filename:
   (e.g., `PROJ-1234-refinement.md`)
 - If no ticket ID: `story-refinement-{YYYY-MM-DD}.md`
 
-Write the file to the project root. Do not ask for confirmation — writing
-the plan is the expected outcome of selecting an approach.
+Write the file to the project root. Do not ask for confirmation — writing the plan is the expected outcome of selecting an approach.
 
 After writing, tell the engineer:
 > "Implementation plan written to {filename}. Open it to review, edit
@@ -226,13 +165,9 @@ Clean up `jira-story-raw.txt` from the project root if it was created.
 - Never read .java or .class files
 - Never load full source directories into context
 - Always run all five feasibility checks before presenting any option
-- Use askQuestions for all question gathering — do not ask as plain text
-- Maximum 5 clarifying questions in Step 4
-- Do not skip the engineer's tradeoff confirmation in Step 6
 - The output .md file is always written — do not make it optional
 - Layer naming in the plan must match app.type:
   - monolith-ear: Web → EJB Session Bean → JPA/JDBC → Oracle Stored Proc
   - microservice: REST Controller → Service → Repository → DB Migration
 - If a story clearly spans multiple applications, flag it immediately in
   Step 3 and recommend splitting into separate stories before proceeding
-- Clean up temporary files (jira-story-raw.txt) after plan is written

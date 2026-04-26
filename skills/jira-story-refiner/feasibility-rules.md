@@ -1,16 +1,10 @@
 # Feasibility Rules — Jira Story Refiner
 
-This file is loaded by the `/jira-story-refiner` skill during Phase 5.
-Apply every rule to every implementation approach being considered.
-Record the result as ✓ Pass, ⚠ Warn, or ✗ Fail with a specific reason.
-An approach with any ✗ Fail is infeasible and must not be presented.
-An approach with ⚠ Warn is feasible but must include the caveat.
+Apply all 5 checks to every approach. Record ✓ Pass / ⚠ Warn / ✗ Fail with a specific reason. Any ✗ Fail = infeasible (drop it). ⚠ Warn = present with caveat.
 
 ---
 
 ## Check 1 — Stack Check
-
-Verify the approach fits the technology available in the project.
 
 ### Rules (all app types)
 
@@ -42,8 +36,6 @@ Verify the approach fits the technology available in the project.
 
 ## Check 2 — Architecture Check
 
-Verify the approach respects the existing layering and design patterns.
-
 ### Layering rules (monolith-ear)
 
 Permitted call directions: Web (WAR) → EJB Session Bean → JPA/JDBC → Oracle Stored Proc
@@ -71,8 +63,6 @@ Permitted call directions: REST Controller → Service → Repository → DB
 
 ## Check 3 — Contract Check
 
-Verify the approach does not break existing API or messaging contracts.
-
 ### API contract rules
 
 | Condition | Result |
@@ -96,8 +86,6 @@ Verify the approach does not break existing API or messaging contracts.
 ---
 
 ## Check 4 — DB Check
-
-Verify database changes are safe and coordinated appropriately.
 
 ### Rules (all app types)
 
@@ -127,8 +115,7 @@ Verify database changes are safe and coordinated appropriately.
 
 ## Check 5 — Cross-App Check
 
-Verify the approach respects team ownership boundaries and the enterprise
-constraint that multiple applications cannot change simultaneously.
+Verify the approach respects team ownership boundaries and the enterprise constraint that multiple applications cannot change simultaneously.
 
 ### Rules (all app types)
 
