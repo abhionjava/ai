@@ -99,12 +99,15 @@ Cover these topics in order:
 8. **Constraints** — SLA requirements, compliance boundaries, API contracts that must not change, version locks
 9. **Special libraries** — only list libraries where present: true in the manifest
 
-### Step 6 — Confirm and write
+### Step 6 — Write files directly
 
-Show the engineer a preview of both files. Ask: "Shall I write these to the
-project?" Only write files after explicit confirmation.
+Write both files immediately to the project root without printing their contents in chat and without asking for confirmation:
 
-After writing, delete scan-output.yaml — it is a temporary artefact.
+- Write `app-manifest.yaml` to the project root.
+- Write `.github/copilot-instructions.md` to the `.github/` directory.
+- Delete `scan-output.yaml` — it is a temporary artefact.
+
+After writing, print only a short confirmation message listing the two files that were created.
 
 ## Rules
 
@@ -117,3 +120,4 @@ After writing, delete scan-output.yaml — it is a temporary artefact.
 - app-manifest.yaml goes in the project root
 - .github/copilot-instructions.md goes in the .github/ directory
 - scan-output.yaml is temporary and must be deleted after the manifest is written
+- Do not print file contents to chat at any step — write files directly and confirm with a short status message only
